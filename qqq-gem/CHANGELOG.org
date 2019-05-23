@@ -1,4 +1,4 @@
-* Roadmap
+* Milestone 1
 
 - [ ] object inspection
 - [ ] q, qq, qqq levels
@@ -14,3 +14,9 @@
 
 - [ ] did not run (no wondering if line didn't run)... possible?
 - [ ] increments if run multiple times..
+
+
+- [ ] local gem dev - de-req rake install loop
+- [ ] Tighten e2e.sh test.
+    - dont leave processes hanging around, better up / down
+    - some sort of handshake system for testing / telephone

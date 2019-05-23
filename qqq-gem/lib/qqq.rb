@@ -20,11 +20,18 @@ module QQQ
   def self.publish(message)
     @redis = Redis.new
 
-    payload = {message: message, uuid: UUIDTools::UUID.random_create()}
-    payload_json = payload.to_json
+    uuid = UUIDTools::UUID.random_create()
 
-    @redis.publish(Keys::MESSAGES_CHANNEL_KEY, message)
-    @redis.publish(Keys::PAYLOAD_CHANNEL_KEY, payload_json)
+    timestamp = Time.now
+
+    message_for_humans = "[#{uuid}] [#{timestamp}] #{message}"
+    @redis.publish(Keys::MESSAGES_CHANNEL_KEY, message_for_humans.to_json)
+
+    payload = {message: message, uuid: uuid, recorded_at: timestamp}
+    @redis.publish(Keys::PAYLOAD_CHANNEL_KEY, payload.to_json)
+
+    # event = Event.new(message: message, uuid: uuid, recorded_at: timestamp)
+    # @redis.publish(Keys::EVENTS_CHANNEL_KEY, event.to_json)
   end
 
   def self.subscribe &block

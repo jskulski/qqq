@@ -5,7 +5,7 @@ module QQQ
     def self.publish(msg)
       conn = Faraday.new(:url => "http://localhost:3600")
       resp = conn.post '/messages', { :message => { message: msg } }
-      puts resp.status
+      puts resp.status, resp.body
     end
   end
 end

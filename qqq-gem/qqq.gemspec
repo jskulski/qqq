@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'redis'
   spec.add_dependency 'json'
-  
+
   spec.add_dependency 'thor'
   spec.add_dependency 'faraday'
   spec.add_dependency 'sinatra'

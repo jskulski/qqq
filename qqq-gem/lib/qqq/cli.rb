@@ -7,6 +7,7 @@ module QQQ
 
     desc :tail, "Tails the qqq log"
     def tail
+      puts "hi"
       QQQ.subscribe do |msg|
         puts msg
       end
