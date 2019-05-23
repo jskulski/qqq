@@ -2,6 +2,7 @@ require 'redis'
 require 'json'
 
 # Lib
+require 'qqq/api'
 require 'qqq/cli'
 require 'qqq/keys'
 require 'qqq/version'
