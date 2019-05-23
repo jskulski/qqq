@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uuid: MyString
+  message: MyText
+  recorded_on: 2019-05-22 21:56:36
+
+two:
+  uuid: MyString
+  message: MyText
+  recorded_on: 2019-05-22 21:56:36

@@ -1,0 +1,16 @@
+* Roadmap
+
+- [ ] object inspection
+- [ ] q, qq, qqq levels
+- [ ] metaprogramming / reflection
+- [ ] rich data
+- [ ] timestamps "events" 
+- [X] record in a database
+- [X] send to an api
+- [X] timestamps 
+- [X] send message from command line
+- [X] tail and mark from command line
+
+
+- [ ] did not run (no wondering if line didn't run)... possible?
+- [ ] increments if run multiple times..

@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "qqq"
+
+QQQ::CLI.start(ARGV)
