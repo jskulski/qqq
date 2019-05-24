@@ -3,10 +3,4 @@ require "rspec/core/rake_task"
 
 RSpec::Core::RakeTask.new(:spec)
 
-task :default => :critical
-
-desc "Critical path suite"
-task :critical do
-  `sh spec/e2e.sh`
-end
-
+task :default => :spec

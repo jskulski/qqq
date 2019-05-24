@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_23_055339) do
+ActiveRecord::Schema.define(version: 2019_05_24_074028) do
 
   create_table "events", force: :cascade do |t|
     t.string "uuid"
     t.text "message"
-    t.datetime "recorded_on"
+    t.datetime "recorded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["message"], name: "index_events_on_message"
-    t.index ["recorded_on"], name: "index_events_on_recorded_on"
+    t.index ["recorded_at"], name: "index_events_on_recorded_at"
     t.index ["uuid"], name: "index_events_on_uuid"
   end
 

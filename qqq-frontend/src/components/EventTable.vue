@@ -2,10 +2,10 @@
 
 <template>
   <vuetable ref="vuetable"
-    api-url="http://localhost:3600/messages"
+    api-url="http://localhost:3600/events"
     pagination-path=""
     data-path="mydata"
-    :fields="['id', 'uuid', 'message', 'recorded at', 'created_at', 'updated_at']"
+    :fields="['id', 'uuid', 'message', 'recorded_at', 'created_at', 'updated_at']"
   ></vuetable>
 </template>
 

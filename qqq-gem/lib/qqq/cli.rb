@@ -7,16 +7,15 @@ module QQQ
 
     desc :tail, "Tails the qqq log"
     def tail
-      puts "hi"
-      QQQ.subscribe do |msg|
-        puts msg
+      QQQ.subscribe do |event|
+        puts event.message
       end
     end
 
     desc :payload, "For now- separate tail"
     def payload
-      QQQ.subscribe_payload do |payload|
-        puts payload.to_s
+      QQQ.subscribe do |event|
+        puts event.to_s
       end
     end
 
@@ -32,9 +31,9 @@ module QQQ
 
     desc :send, "Sends message to a remote server"
     def send
-      QQQ.subscribe do |msg|
-        puts "Remotely publishing: #{msg}"
-        API.publish(msg)
+      QQQ.subscribe do |event|
+        puts "Remotely publishing: #{event.message}"
+        API.publish(event)
       end
     end
 

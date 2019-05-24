@@ -26,6 +26,7 @@ dev
 * Milestone II
 
 features
+- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
 - [ ] some recent history (last 100?) when I start tailing
 - [ ] q, qq, qqq levels
 - [ ] file worker (append to /tmp/qqq)
