@@ -19,21 +19,18 @@ module QQQ
   end
 
   def self.publish(message)
-    @redis = Redis.new
-
     uuid = UUIDTools::UUID.random_create().to_s
     timestamp = Time.now
 
     message_for_humans = "[#{uuid}] [#{timestamp}] #{message}"
-    @redis.publish(Keys::MESSAGES_CHANNEL_KEY, message_for_humans.to_json)
+    redis.publish(Keys::MESSAGES_CHANNEL_KEY, message_for_humans.to_json)
 
     event = Event.new(uuid: uuid, message: message, recorded_at: timestamp)
-    @redis.publish(Keys::EVENT_CHANNEL_KEY, event.to_json)
+    redis.publish(Keys::EVENT_CHANNEL_KEY, event.to_json)
   end
 
   def self.subscribe &block
-    @redis = Redis.new
-    @redis.subscribe Keys::EVENT_CHANNEL_KEY do |on|
+    redis.subscribe Keys::EVENT_CHANNEL_KEY do |on|
       puts "Connected..."
 
       on.message do |channel, event_json_string|
@@ -42,5 +39,19 @@ module QQQ
       end
     end
   end
+
+  private
+
+  def self.redis
+    puts "wha hoo"
+    if defined?(FakeRedis) && FakeRedis.enabled?
+      FakeRedis.disable
+      @redis ||= Redis.new
+      FakeRedis.enable
+    else
+      @redis ||= Redis.new
+    end
+  end
+
 end
 

@@ -37,6 +37,12 @@ module QQQ
       end
     end
 
+    desc :version, "Publishes the version number"
+    def version
+      puts "QQQ Version #{QQQ::VERSION}"
+      QQQ.publish(QQQ::VERSION)
+    end
+
     # desc :server, "Starts server to receive message"
     # def server
     #   Sinatra....how?

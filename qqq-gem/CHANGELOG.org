@@ -1,15 +1,9 @@
-* Milestone I
+
+* Version 0.1.0 - Milestone I
 
 "Better than puts"
 
-table stakes
-- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
-- [ ] update documentation
-- [ ] general presentation polish
-- [ ] more tests? CI?
-
 features
-- [ ] a way to specifiy redis config (my qqq's in tests are getting lost to a fake redis)
 - [X] recorded timestamp and uuid recorded in db
 - [X] record in a database
 - [X] send to an api
@@ -22,6 +16,16 @@ dev
 - [X] create rudimentary uh... dashboard/orchestration
 - [X] Tighten e2e.sh test.
 
+** 0.1.1 
+
+table stakes
+- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
+- [ ] update documentation
+- [ ] general presentation polish
+- [ ] more tests? CI?
+
+features
+- [ ] a way to specifiy redis config (my qqq's in tests are getting lost to a fake redis)
 
 * Milestone II
 
