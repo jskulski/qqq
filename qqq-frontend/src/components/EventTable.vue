@@ -5,7 +5,7 @@
     api-url="http://localhost:3600/events"
     pagination-path=""
     data-path="mydata"
-    :fields="['id', 'uuid', 'message', 'recorded_at', 'created_at', 'updated_at']"
+    :fields="['uuid', 'recorded_at', 'message']"
   ></vuetable>
 </template>
 
@@ -37,16 +37,14 @@ export default {
 
       for (var i=0; i < data.length; i++) {
         transformed.mydata.push({
-          id: data[i].id,
+          // id: data[i].id,
+          recorded_at: data[i].recorded_at,
           uuid: data[i].uuid,
           message: data[i].message,
-          recorded_at: data[i].recorded_at,
-          created_at: data[i].created_at,
-          updated_at: data[i].updated_at,
+          // created_at: data[i].created_at,
+          // updated_at: data[i].updated_at,
         })
       }
-
-      console.log(transformed)
 
       return transformed
 

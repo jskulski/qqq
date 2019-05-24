@@ -7,7 +7,7 @@ features
 - [ ] metaprogramming / reflection
 
 - [ ] rich data
-- [ ] recorded timestamp and uuid recorded in db
+- [X] recorded timestamp and uuid recorded in db
 - [X] record in a database
 - [X] send to an api
 - [X] timestamps 
@@ -33,6 +33,7 @@ features
 - [ ] plugin arch for worker 
 - [ ] updated development documentation 
 - [ ] api key to follow me around (~/.qqq.conf or whatever) 
+- [ ] updating webapp (websockets) 
 
 dev 
 - [ ] split out configuration (yaml?) for 'service' interaction
