@@ -2,31 +2,33 @@
 
 "Better than puts"
 
-features
-- [ ] object inspection
-- [ ] metaprogramming / reflection
+table stakes
+- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
+- [ ] update documentation
+- [ ] general presentation polish
+- [ ] more tests? CI?
 
-- [ ] rich data
+features
+- [ ] a way to specifiy redis config (my qqq's in tests are getting lost to a fake redis)
 - [X] recorded timestamp and uuid recorded in db
 - [X] record in a database
 - [X] send to an api
 - [X] timestamps 
 - [X] send message from command line
 - [X] tail and mark from command line
-- [ ] did not run (no wondering if line didn't run)... possible?
-- [ ] increments if run multiple times..
-- [ ] start / stop 'marks' 
 
-dev 
+dev
+- [ ] simplify dashboard 
 - [X] create rudimentary uh... dashboard/orchestration
 - [X] Tighten e2e.sh test.
-- [ ] local gem dev - de-req rake install loop
-- [ ] some sort of handshake system for handling processes
+
 
 * Milestone II
 
 features
-- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
+- [ ] did not run (no wondering if line didn't run)... possible?
+- [ ] increments if run multiple times..
+- [ ] start / stop 'marks' 
 - [ ] some recent history (last 100?) when I start tailing
 - [ ] q, qq, qqq levels
 - [ ] file worker (append to /tmp/qqq)
@@ -34,8 +36,20 @@ features
 - [ ] updated development documentation 
 - [ ] api key to follow me around (~/.qqq.conf or whatever) 
 - [ ] updating webapp (websockets) 
+- [ ] handles complex object printing
+- [ ] rich data
+- [ ] metaprogramming / reflection
+- [ ] config panel to turn on/off 'q steams'
 
-dev 
+
+dev
+- [ ] some sort of handshake system for handling processes
+- [ ] local gem dev - de-req rake install loop 
 - [ ] split out configuration (yaml?) for 'service' interaction
 - [ ] split the development panel / user panel 
-- [ ] config panel to turn on/off 'q steams'
+
+* Beyond
+
+- move to a ruby only actor model? (https://github.com/ntl/actor)
+- consider other options?
+- electron app for dashboard? get away from shell stuff

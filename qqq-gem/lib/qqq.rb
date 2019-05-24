@@ -13,6 +13,7 @@ require 'uuidtools'
 module QQQ
   class Error < StandardError; end
 
+  # message = "hello world"
   def self.qqq(message)
     publish(message)
   end
