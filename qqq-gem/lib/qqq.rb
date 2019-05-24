@@ -29,9 +29,6 @@ module QQQ
 
     payload = {message: message, uuid: uuid, recorded_at: timestamp}
     @redis.publish(Keys::PAYLOAD_CHANNEL_KEY, payload.to_json)
-
-    # event = Event.new(message: message, uuid: uuid, recorded_at: timestamp)
-    # @redis.publish(Keys::EVENTS_CHANNEL_KEY, event.to_json)
   end
 
   def self.subscribe &block

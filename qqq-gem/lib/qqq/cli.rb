@@ -25,9 +25,9 @@ module QQQ
       QQQ.publish("MARK: --MARK--")
     end
 
-    desc "echo [message]", "Simple echo"
-    def echo(message)
-      QQQ.publish("ECHO: #{message}")
+    desc "echo [messages]", "Simple echo"
+    def echo(*messages)
+      QQQ.publish("ECHO: #{messages}")
     end
 
     desc :send, "Sends message to a remote server"
