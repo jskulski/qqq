@@ -1,4 +1,5 @@
 # QQQ
 
-Print debugging for professionals
-Better than puts
+- Elegant print debugging
+- Print debugging for professionals
+- Better than puts
