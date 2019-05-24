@@ -1,4 +1,4 @@
-# QQQ
+* QQQ
 
 - Elegant print debugging
 - Print debugging for professionals
