@@ -27,7 +27,7 @@ module QQQ
 
     desc "echo [messages]", "Simple echo"
     def echo(*messages)
-      QQQ.publish("ECHO: #{messages}")
+      QQQ.publish("ECHO: #{messages.join(" ")}")
     end
 
     desc :send, "Sends message to a remote server"

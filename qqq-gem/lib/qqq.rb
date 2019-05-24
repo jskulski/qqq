@@ -21,7 +21,6 @@ module QQQ
     @redis = Redis.new
 
     uuid = UUIDTools::UUID.random_create()
-
     timestamp = Time.now
 
     message_for_humans = "[#{uuid}] [#{timestamp}] #{message}"
