@@ -8,14 +8,7 @@ module QQQ
     desc :tail, "Tails the qqq log"
     def tail
       QQQ.subscribe do |event|
-        puts event.message
-      end
-    end
-
-    desc :payload, "For now- separate tail"
-    def payload
-      QQQ.subscribe do |event|
-        puts event.to_s
+        puts event.for_humans
       end
     end
 
@@ -24,29 +17,23 @@ module QQQ
       QQQ.publish("MARK: --MARK--")
     end
 
-    desc "echo [messages]", "Simple echo"
+    desc "echo [messages]", "Log a message"
     def echo(*messages)
-      QQQ.publish("ECHO: #{messages.join(" ")}")
+      QQQ.publish("#{messages.join(" ")}")
     end
 
-    desc :send, "Sends message to a remote server"
-    def send
-      QQQ.subscribe do |event|
-        puts "Remotely publishing: #{event.message}"
-        API.publish(event)
+    desc "hello", "Waits for a subscriber then says hello"
+    def hello
+      QQQ.system_when(:subscribed_to_events) do |subscriber_id|
+        QQQ.publish
       end
     end
 
-    desc :version, "Publishes the version number"
+    desc :version, "Logs the version number"
     def version
-      puts "QQQ Version #{QQQ::VERSION}"
+      puts "QQQ version: #{QQQ::VERSION}"
       QQQ.publish(QQQ::VERSION)
     end
-
-    # desc :server, "Starts server to receive message"
-    # def server
-    #   Sinatra....how?
-    # end
   end
 end
 

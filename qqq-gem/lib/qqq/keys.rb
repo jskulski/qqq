@@ -1,6 +1,6 @@
 module QQQ
   module Keys
-    MESSAGES_CHANNEL_KEY = "qqq::messages_channel"
-    EVENT_CHANNEL_KEY = "qqq::payload_channel"
+    SYSTEM_CHANNEL_KEY = "qqq::channel::system"
+    EVENT_CHANNEL_KEY = "qqq::channel::event"
   end
 end
