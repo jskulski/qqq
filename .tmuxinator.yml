@@ -4,19 +4,19 @@ root: <%= Dir.pwd %>
 # on_project_start: cd qqq-gem ; rake install
 
 windows:
-  - cli:
+
+  # Me at work, I just want to see the thing in one place.
+  - qqq_developer_user:
       root: <%= "#{Dir.pwd}/qqq-gem" %>
       layout: tiled
       panes:
-        - bundle exec qqq echo "Hello, world\!"
+        - bundle exec qqq hello
         - bundle exec qqq tail
-        - bundle exec qqq payload
-        - bundle exec qqq send
 
-  - server:
-      layout: tiled
-      panes:
-        - cd qqq-frontend ; yarn serve
-        - cd qqq-app; bundle exec rails s
-        - cd qqq-app; tail -f log/development.log
-        - open http://localhost:3600/ http://localhost:8080/
+  # - server:
+  #     layout: tiled
+  #     panes:
+  #       - cd qqq-frontend ; yarn serve
+  #       - cd qqq-app; bundle exec rails s
+  #       - cd qqq-app; tail -f log/development.log
+  #       - open http://localhost:3600/ http://localhost:8080/
