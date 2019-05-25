@@ -1,59 +1,154 @@
+* Upcoming 0.2.0 - Woodworking
 
-* Version 0.1.0 - Milestone I
+"Do one thing well"
 
-"Better than puts"
+Slim down all the extras. Focus on print debugging from anywhere in ruby.
+
+** 0.1.2
+
+- [X] Simplify dashboard, easier to read
+- [ ] system log channel, 
+- [ ] perhaps.. handshake system for handling processes, testing?
+- [ ] file worker (append to /tmp/qqq)
+- [X] remove send... for now. 
+- [X] remove payload command for only tail
+
+** 0.1.1 
+
+- [X] Hack around fakeredis to get redis connection, if enabled
+- [X] Remove messages in favor of richer Event structure 
+
+* DONE 0.1.0 - A Thing
+
+"It's doing /something/"
 
 features
-- [X] recorded timestamp and uuid recorded in db
-- [X] record in a database
+- [X] recorded timestamp and uuid recorded in db through app
+- [X] record message in a database
 - [X] send to an api
 - [X] timestamps 
 - [X] send message from command line
 - [X] tail and mark from command line
 
 dev
-- [ ] simplify dashboard 
-- [X] create rudimentary uh... dashboard/orchestration
-- [X] Tighten e2e.sh test.
+- [X] Create rudimentary uh... dashboard/orchestration
+- [X] Create e2e.sh
 
-** 0.1.1 
+* Roadmap 
 
-table stakes
-- [ ] some sort of supervisor around cli, etc. e.g. api send dies if server not up yet. should hang out and retry
-- [ ] update documentation
-- [ ] general presentation polish
+** Table stakes / cleanup
+- [ ] Add enough documentation to hello, world (and understand what qqq is) 
+- [ ] get someone else to install it, use it
+- [ ] Supervisor around cli, etc. e.g. api send dies if server not up yet
+- [ ] Cut out redis for ruby pubsub? generate servers for every lang..? just make them..?  https://blog.appsignal.com/2018/08/28/push-and-pubsub-in-ruby.html
 - [ ] more tests? CI?
+- [ ] Remove payload/messages dichotomy
 
-features
-- [ ] a way to specifiy redis config (my qqq's in tests are getting lost to a fake redis)
-
-* Milestone II
-
-features
+** user features
+- [ ] a way to specifiy redis config
 - [ ] did not run (no wondering if line didn't run)... possible?
 - [ ] increments if run multiple times..
 - [ ] start / stop 'marks' 
 - [ ] some recent history (last 100?) when I start tailing
 - [ ] q, qq, qqq levels
-- [ ] file worker (append to /tmp/qqq)
 - [ ] plugin arch for worker 
 - [ ] updated development documentation 
 - [ ] api key to follow me around (~/.qqq.conf or whatever) 
 - [ ] updating webapp (websockets) 
 - [ ] handles complex object printing
-- [ ] rich data
+- [ ] accept payloads, rich data, rich data
 - [ ] metaprogramming / reflection
 - [ ] config panel to turn on/off 'q steams'
 
-
-dev
-- [ ] some sort of handshake system for handling processes
+** dev
+- [ ] how can i test this whole system
 - [ ] local gem dev - de-req rake install loop 
 - [ ] split out configuration (yaml?) for 'service' interaction
-- [ ] split the development panel / user panel 
+- [ ] split the development panel / user panel
 
-* Beyond
+** brewing ideas
 
+- get off redis... https://faye.jcoglan.com/ruby/clients.html
 - move to a ruby only actor model? (https://github.com/ntl/actor)
-- consider other options?
-- electron app for dashboard? get away from shell stuff
+- other langs, javascript?
+- electron app for dashboard? get away from shell stuff... maybe node is the lang
+
+restreaming
+- qqq.restream(:my_event) do |event| 
+    ...
+  end
+*** Writing a program to generate the apis...
+
+ Could I write some sort of program that could.. create these clients? 
+
+ #+begin_src lisp
+   (namespace :QQQ :CLI
+     (define-cli
+       (define-task "tail"
+         (qqq/subscribe (key message-channel) print-event-to-screen)))
+
+     (define-function print-event-to-screen (event)
+       (system-output-command
+        (brackets (:timestamp event))
+        (space)
+        (brackets (:uuid event))
+        (space)
+        (brackets (:message event))
+        (newline))))
+
+   (namespace
+    :QQQ :API
+    (define-function :publish (message)
+      (redis :publish (key event-channel)
+             (marshall-to-json (create-event
+                                (create-uuid
+                                 create-timestamp
+                                 message)))))
+
+   (namespace
+    :QQQ :API
+    (define-function :subscribe (function_or_callable)
+      (redis :subscribe (key event-channel)
+             (lambda (event) (call function_or_callable event)))))
+ #+end_src
+
+
+ Could potentially use org-mode/tangle to do multi-lang well
+
+ (After qqq, do developer user interviews screen share to find real patterns...)
+
+ Under heading * Ruby ** Define Module
+
+ #+value: module-name
+ #+value: content
+ #+begin_src ruby
+ defmodule #{module-name}
+    #{content}
+ end
+ #+end_src
+
+ I bet that could done reasonably in ruby...
+
+
+ #+begin_src ruby
+   class Generator
+     attr_reader :lang
+     def define_namespace (name, &content_block)
+       #render :erb, "path/to/_module.erb", name, content_block.render
+   <<-END
+   defmodule #{name}
+     #{content_block.render}
+   end
+   END
+     end
+
+
+   define_namespace(:QQQ) do
+     define_module(:CLI) do 
+       define_func(:echo, :argument_vector) do |messages|
+         Generated::Formatters::ForHumans.format(messages)
+         Generated::Library::QQQ::publish 
+       end
+     end
+   end
+ #+end_src
