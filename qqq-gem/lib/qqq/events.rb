@@ -3,16 +3,25 @@ module QQQ
 
     attr_reader :uuid, :message, :recorded_at
 
-    def self.from(json_string:)
+    def self.from_message(message)
+      timestamp = Time.now
+      uuid = UUIDTools::UUID.random_create().to_s
+      Event.new(uuid: uuid, message: message, recorded_at: timestamp)
+    end
+
+    def self.from_json_string(json_string)
       payload = JSON.parse json_string
-      puts payload
       Event.new(uuid: payload["uuid"], message: payload["message"], recorded_at: payload["recorded_at"])
     end
 
     def initialize(uuid:, message:, recorded_at:)
       @uuid = uuid
-      @message = message
       @recorded_at = recorded_at
+      @message = message
+    end
+
+    def for_humans
+      "[#{@uuid}] [#{@recorded_at}] #{@message}"
     end
 
     def as_json(options={})
@@ -27,4 +36,5 @@ module QQQ
     end
 
   end
+
 end

@@ -10,7 +10,7 @@ windows:
       root: <%= "#{Dir.pwd}/qqq-gem" %>
       layout: tiled
       panes:
-        - bundle exec qqq hello
+        - bundle exec qqq mark 3
         - bundle exec qqq tail
 
   # - server:

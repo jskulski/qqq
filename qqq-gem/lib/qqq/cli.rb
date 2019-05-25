@@ -1,5 +1,4 @@
 require 'thor'
-require 'json'
 
 module QQQ
   class CLI < Thor
@@ -12,21 +11,23 @@ module QQQ
       end
     end
 
-    desc :mark, "Marks the log"
-    def mark
-      QQQ.publish("MARK: --MARK--")
+    desc "mark [repeat_interval]", "Marks the log (optionally every X seconds)"
+    def mark(repeat_interval)
+      repeat_interval = repeat_interval.to_i rescue 0
+      loop do
+        QQQ.publish("MARK: --MARK--")
+
+        if repeat_interval > 0
+          sleep repeat_interval
+        else
+          break
+        end
+      end
     end
 
     desc "echo [messages]", "Log a message"
     def echo(*messages)
       QQQ.publish("#{messages.join(" ")}")
-    end
-
-    desc "hello", "Waits for a subscriber then says hello"
-    def hello
-      QQQ.system_when(:subscribed_to_events) do |subscriber_id|
-        QQQ.publish
-      end
     end
 
     desc :version, "Logs the version number"
