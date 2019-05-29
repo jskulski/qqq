@@ -7,11 +7,9 @@ Slim down all the extras. Focus on print debugging from anywhere in ruby.
 ** 0.1.2
 
 - [X] Simplify dashboard, easier to read
-- [ ] system log channel, 
-- [ ] perhaps.. handshake system for handling processes, testing?
-- [ ] file worker (append to /tmp/qqq)
 - [X] remove send... for now. 
 - [X] remove payload command for only tail
+- [X] mark command can optionally repeat
 
 ** 0.1.1 
 
@@ -45,6 +43,7 @@ dev
 - [ ] Remove payload/messages dichotomy
 
 ** user features
+- [ ] file worker (append to /tmp/qqq)
 - [ ] a way to specifiy redis config
 - [ ] did not run (no wondering if line didn't run)... possible?
 - [ ] increments if run multiple times..
@@ -62,6 +61,8 @@ dev
 
 ** dev
 - [ ] how can i test this whole system
+- [ ] system log channel, 
+- [ ] perhaps.. handshake system for handling processes, testing?
 - [ ] local gem dev - de-req rake install loop 
 - [ ] split out configuration (yaml?) for 'service' interaction
 - [ ] split the development panel / user panel
@@ -71,12 +72,17 @@ dev
 - get off redis... https://faye.jcoglan.com/ruby/clients.html
 - move to a ruby only actor model? (https://github.com/ntl/actor)
 - other langs, javascript?
-- electron app for dashboard? get away from shell stuff... maybe node is the lang
+- electron app for dashboard? get away from shell stuff... 
 
 restreaming
 - qqq.restream(:my_event) do |event| 
     ...
   end
+
+- log to the standard log with a link to the specific log
+ 
+check out https://github.com/janlelis/debugging
+
 *** Writing a program to generate the apis...
 
  Could I write some sort of program that could.. create these clients? 

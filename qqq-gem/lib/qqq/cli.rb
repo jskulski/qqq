@@ -2,11 +2,11 @@ require 'thor'
 
 module QQQ
   class CLI < Thor
-    default_task :tail
+    default_task "tail"
 
-    desc :tail, "Tails the qqq log"
+    desc "tail", "Tails the qqq log"
     def tail
-      QQQ.subscribe do |event|
+      qqq.subscribe do |event|
         puts event.for_humans
       end
     end
@@ -15,7 +15,7 @@ module QQQ
     def mark(repeat_interval)
       repeat_interval = repeat_interval.to_i rescue 0
       loop do
-        QQQ.publish("MARK: --MARK--")
+        qqq.mark
 
         if repeat_interval > 0
           sleep repeat_interval
