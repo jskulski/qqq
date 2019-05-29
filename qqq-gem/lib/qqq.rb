@@ -14,13 +14,13 @@ require 'qqq/version'
 
 module Kernel
   private
-  def q(message:nil)
+  def q(message=nil)
     @qqq_developer ||= QQQ::Developer.new
     message ? @qqq_developer.publish(message) : @qqq_developer.mark
     @qqq_developer
   end
 
-  def qqq(message: nil)
+  def qqq(message=nil)
     @qqq_developer ||= QQQ::Developer.new
     message ? @qqq_developer.publish(message) : @qqq_developer.mark
     @qqq_developer
