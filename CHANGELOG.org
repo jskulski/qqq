@@ -1,8 +1,8 @@
-* Upcoming 0.2.0 - Woodworking
-
 "Do one thing well"
 
 Slim down all the extras. Focus on print debugging from anywhere in ruby.
+
+** 0.1.3
 
 ** 0.1.2
 
@@ -45,6 +45,7 @@ dev
 ** user features
 - [ ] file worker (append to /tmp/qqq)
 - [ ] a way to specifiy redis config
+- [ ] replace with own pubsub server...
 - [ ] did not run (no wondering if line didn't run)... possible?
 - [ ] increments if run multiple times..
 - [ ] start / stop 'marks' 
@@ -56,8 +57,19 @@ dev
 - [ ] updating webapp (websockets) 
 - [ ] handles complex object printing
 - [ ] accept payloads, rich data, rich data
-- [ ] metaprogramming / reflection
 - [ ] config panel to turn on/off 'q steams'
+- [ ] a way to specify a 'runable function'
+- [ ] return the message so you can do `qqq somevalue == someother`
+
+- metadata
+    - [ ] reflection
+    - [ ] add classes, types
+
+QQQ.define do
+    data = Data.find(some_id)
+    qqq data
+end
+
 
 ** dev
 - [ ] how can i test this whole system
