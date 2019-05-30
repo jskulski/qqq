@@ -1,4 +1,5 @@
 require 'thor'
+require 'qqq/file'
 
 module QQQ
   class CLI < Thor
@@ -6,7 +7,7 @@ module QQQ
 
     desc "tail", "Tails the qqq log"
     def tail
-      qqq.subscribe do |event|
+      QQQ.dev.subscribe do |event|
         puts event.for_humans
       end
     end
@@ -15,7 +16,7 @@ module QQQ
     def mark(repeat_interval)
       repeat_interval = repeat_interval.to_i rescue 0
       loop do
-        qqq.mark
+        QQQ.dev.mark
         if repeat_interval > 0
           sleep repeat_interval
         else
@@ -26,13 +27,28 @@ module QQQ
 
     desc "echo [messages]", "Log a message"
     def echo(*messages)
-      QQQ.publish("#{messages.join(" ")}")
+      QQQ.dev.publish("#{messages.join(" ")}")
     end
 
     desc :version, "Logs the version number"
     def version
       puts "QQQ version: #{QQQ::VERSION}"
-      QQQ.publish(QQQ::VERSION)
+      QQQ.dev.publish(QQQ::VERSION)
+    end
+
+    #
+    # Files
+    # (TODO: split)
+    desc "file", "Server"
+    def file
+      QQQ.dev.subscribe do |event|
+        QQQ::FileAppender.append(event)
+      end
+    end
+
+    desc "filetail", "Tails the qqq log"
+    def filetail
+      system("tail -f #{QQQ::FileAppender::FILEPATH}")
     end
   end
 end

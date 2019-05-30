@@ -4,7 +4,6 @@ require 'json'
 
 # Lib
 require 'qqq/events'
-require 'qqq/api'
 require 'qqq/cli'
 require 'qqq/keys'
 require 'qqq/version'
@@ -12,26 +11,25 @@ require 'qqq/version'
 module Kernel
   private
   def q(message=nil)
-    @qqq_developer ||= QQQ::Developer.new
-    @qqq_developer.publish(message) if message
-    @qqq_developer
+    QQQ.qqq(message)
   end
 
   def qqq(message=nil)
-    @qqq_developer ||= QQQ::Developer.new
-    @qqq_developer.publish(message) if message
-    @qqq_developer
+    QQQ.qqq(message)
   end
 end
 
 module QQQ
   class Error < StandardError; end
 
+  def self.dev
+    @qqq_developer ||= Developer.new
+  end
+
   #
   # Developer log channels
   #
   class Developer
-
     def initialize
       @mark_counter = 0
     end

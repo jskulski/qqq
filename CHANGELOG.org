@@ -4,6 +4,9 @@ Slim down all the extras. Focus on print debugging from anywhere in ruby.
 
 ** 0.1.3
 
+- [X] file worker (append to /tmp/qqq)
+- [ ] system messaging for testing and debug
+
 ** 0.1.2
 
 - [X] Simplify dashboard, easier to read
@@ -43,9 +46,6 @@ dev
 - [ ] Remove payload/messages dichotomy
 
 ** user features
-- [ ] file worker (append to /tmp/qqq)
-- [ ] a way to specifiy redis config
-- [ ] replace with own pubsub server...
 - [ ] did not run (no wondering if line didn't run)... possible?
 - [ ] increments if run multiple times..
 - [ ] start / stop 'marks' 
@@ -58,7 +58,7 @@ dev
 - [ ] handles complex object printing
 - [ ] accept payloads, rich data, rich data
 - [ ] config panel to turn on/off 'q steams'
-- [ ] a way to specify a 'runable function'
+- [ ] a way to specify a 'runable function' like a test maybe?
 - [ ] return the message so you can do `qqq somevalue == someother`
 
 - metadata
@@ -72,6 +72,8 @@ end
 
 
 ** dev
+- [ ] a way to specifiy redis config
+- [ ] replace with own pubsub server...
 - [ ] how can i test this whole system
 - [ ] system log channel, 
 - [ ] perhaps.. handshake system for handling processes, testing?
