@@ -1,0 +1,14 @@
+{
+  "name": "qqq-cli",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {},
+  "bin": {
+    "node-qqq": "bin/node-qqq"
+  },
+  "devDependencies": {},
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "node-redis": "^0.1.7"
+  }
+}
