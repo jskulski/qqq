@@ -39,8 +39,8 @@ module QQQ
     #
     # Files
     # (TODO: split)
-    desc "file", "Server"
-    def file
+    desc "file-appender", "Server"
+    def file_appender
       QQQ.dev.subscribe do |event|
         QQQ::FileAppender.append(event)
       end

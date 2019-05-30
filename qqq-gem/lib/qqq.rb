@@ -26,27 +26,15 @@ module QQQ
     @qqq_developer ||= Developer.new
   end
 
-  #
-  # Developer log channels
-  #
-  class Developer
-    def initialize
-      @mark_counter = 0
-    end
-
-    def mark
-      @mark_counter += 1
-      publish("MARK: --MARK-- (#{@mark_counter})")
-    end
-
+  module Publisher
     def publish(message)
       event = Event.from_message(message)
-      redis.publish(Keys::EVENT_CHANNEL_KEY, event.to_json)
+      redis.publish(channel, event.to_json)
     end
 
     def subscribe &block
-      redis.subscribe Keys::EVENT_CHANNEL_KEY do |on|
-        on.message do |channel, event_json_string|
+      redis.subscribe channel do |on|
+        on.message do |_channel, event_json_string|
           event = Event.from_json_string(event_json_string)
           block.call(event)
         end
@@ -65,6 +53,34 @@ module QQQ
       end
 
       @redis
+    end
+  end
+
+  class System
+    include Publisher
+
+    def channel
+      Keys::SYSTEM_CHANNEL_KEY
+    end
+  end
+
+  #
+  # Developer log channels
+  #
+  class Developer
+    include Publisher
+
+    def initialize
+      @mark_counter = 0
+    end
+
+    def mark
+      @mark_counter += 1
+      publish("MARK: --MARK-- (#{@mark_counter})")
+    end
+
+    def channel
+      Keys::EVENT_CHANNEL_KEY
     end
   end
 end

@@ -16,7 +16,7 @@ windows:
       root: <%= "#{Dir.pwd}/qqq-gem" %>
       layout: tiled
       panes:
-        - bundle exec qqq file
+        - bundle exec qqq file-appender
         - bundle exec qqq filetail
       
   # - server:
