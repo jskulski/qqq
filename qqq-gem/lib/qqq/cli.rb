@@ -16,7 +16,6 @@ module QQQ
       repeat_interval = repeat_interval.to_i rescue 0
       loop do
         qqq.mark
-
         if repeat_interval > 0
           sleep repeat_interval
         else

@@ -1,3 +1,5 @@
+require 'uuidtools'
+
 module QQQ
   class Event
 
@@ -5,7 +7,7 @@ module QQQ
 
     def self.from_message(message)
       timestamp = Time.now
-      uuid = UUIDTools::UUID.random_create().to_s
+      uuid = UUIDTools::UUID.random_create().to_s.split('-').first
       Event.new(uuid: uuid, message: message, recorded_at: timestamp)
     end
 

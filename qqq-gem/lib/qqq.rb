@@ -1,7 +1,6 @@
 # Gems
 require 'redis'
 require 'json'
-require 'uuidtools'
 
 # Lib
 require 'qqq/events'
@@ -10,19 +9,17 @@ require 'qqq/cli'
 require 'qqq/keys'
 require 'qqq/version'
 
-
-
 module Kernel
   private
   def q(message=nil)
     @qqq_developer ||= QQQ::Developer.new
-    message ? @qqq_developer.publish(message) : @qqq_developer.mark
+    @qqq_developer.publish(message) if message
     @qqq_developer
   end
 
   def qqq(message=nil)
     @qqq_developer ||= QQQ::Developer.new
-    message ? @qqq_developer.publish(message) : @qqq_developer.mark
+    @qqq_developer.publish(message) if message
     @qqq_developer
   end
 end
