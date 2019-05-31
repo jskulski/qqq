@@ -24,6 +24,11 @@ module Gen
           end
         end
       end
+
+      define_command(:mark) do
+        payload = event_json(event_from_message("--MARK--"))
+        pubsub_publish(EVENTS_CHANNEL, payload)
+      end
     end
   end
 end

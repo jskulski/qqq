@@ -4,15 +4,39 @@
 
 Slim down all the extras. Focus on print debugging from anywhere in ruby.
 
-** 0.1.4 
+** 0.1.4
 
-- [ ] Plumb qq for introspection in ruby 
-  - [ ] Print variable name
-  - [ ] Print function/line if possible
-  - [ ] Print time since last message
+Improve utility of the print debugging tool.
 
-[uuid] [timestamp]
-<message>
+- [X] more time with generating CLIs (it's hard!)
+- [ ] Viewable with color
+- [ ] Print variable name
+- [ ] Print function/line/file
+- [ ] Print time since last message
+- [ ] Print nil as nil not blank
+- [ ] Handle giant output gracefully
+
+[short-uuid] [ timestamp ] [ filepath:lineno in `func` ]
+[ 0m00s ] <message .....>
+[ 0m01s ] <message2 .....>
+[ 0m03s ] <message3 ...... truncated: see full view>
+
+
+[short-uuid] [ timestamp ] [ filepath:lineno in `func` ]
+[ 0m00s ] <message .....>
+[ 0m01s ] <message2 .....>
+
+javascript argument name... i guess
+or use https://www.npmjs.com/package/parse-function#parsefunction
+#+begin_src javascript
+  function argumentNames(fun) {
+      var names = fun.toString().match(/^[\s\(]*function[^(]*\(([^)]*)\)/)[1]
+          .replace(/\/\/.*?[\r\n]|\/\*(?:.|[\r\n])*?\*\//g, '')
+          .replace(/\s+/g, '').split(',');
+      return names.length == 1 && !names[0] ? [] : names;
+  }
+
+#+end_src
 
 ** 0.1.3
 
@@ -23,16 +47,16 @@ Slim down all the extras. Focus on print debugging from anywhere in ruby.
 ** 0.1.2
 
 - [X] Simplify dashboard, easier to read
-- [X] remove send... for now. 
+- [X] remove send... for now.
 - [X] remove payload command for only tail
 - [X] mark command can optionally repeat
 
-** 0.1.1 
+** 0.1.1
 
 - [X] Hack around fakeredis to get redis connection, if enabled
 - [X] Remove messages in favor of richer Event structure
 - [X] increments if run multiple times..
-- [X] q, qq, qqq levels 
+- [X] q, qq, qqq levels
 
 * DONE 0.1.0 - A Thing
 
@@ -42,7 +66,7 @@ features
 - [X] recorded timestamp and uuid recorded in db through app
 - [X] record message in a database
 - [X] send to an api
-- [X] timestamps 
+- [X] timestamps
 - [X] send message from command line
 - [X] tail and mark from command line
 
@@ -51,10 +75,10 @@ dev
 - [X] Create e2e.sh
 - [X] Remove payload/messages dichotomy
 
-* Roadmap 
+* Roadmap
 
 ** Table stakes / cleanup
-- [ ] Add enough documentation to hello, world (and understand what qqq is) 
+- [ ] Add enough documentation to hello, world (and understand what qqq is)
 - [ ] get someone else to install it, use it
 - [ ] Supervisor around cli, etc. e.g. api send dies if server not up yet
 - [ ] Cut out redis for ruby pubsub? generate servers for every lang..? just make them..?  https://blog.appsignal.com/2018/08/28/push-and-pubsub-in-ruby.html
@@ -62,12 +86,12 @@ dev
 
 ** user features
 - [ ] did not run (no wondering if line didn't run)... possible?
-- [ ] start / stop 'marks' 
+- [ ] start / stop 'marks'
 - [ ] some recent history (last 100?) when I start tailing
-- [ ] plugin arch for worker 
-- [ ] updated development documentation 
-- [ ] api key to follow me around (~/.qqq.conf or whatever) 
-- [ ] updating webapp (websockets) 
+- [ ] plugin arch for worker
+- [ ] updated development documentation
+- [ ] api key to follow me around (~/.qqq.conf or whatever)
+- [ ] updating webapp (websockets)
 - [ ] handles complex object printing
 - [ ] accept payloads, rich data, rich data
 - [ ] config panel to turn on/off 'q steams'
@@ -89,9 +113,9 @@ end
 - [ ] a way to specifiy redis config
 - [ ] replace with own pubsub server...
 - [ ] how can i test this whole system
-- [ ] system log channel, 
+- [ ] system log channel,
 - [ ] perhaps.. handshake system for handling processes, testing?
-- [ ] local gem dev - de-req rake install loop 
+- [ ] local gem dev - de-req rake install loop
 - [ ] split out configuration (yaml?) for 'service' interaction
 - [ ] split the development panel / user panel
 
@@ -103,20 +127,20 @@ https://github.com/koczkatamas/onelang
 - get off redis... https://faye.jcoglan.com/ruby/clients.html
 - move to a ruby only actor model? (https://github.com/ntl/actor)
 - other langs, javascript?
-- electron app for dashboard? get away from shell stuff... 
+- electron app for dashboard? get away from shell stuff...
 
 restreaming
-- qqq.restream(:my_event) do |event| 
+- qqq.restream(:my_event) do |event|
     ...
   end
 
 - log to the standard log with a link to the specific log
- 
+
 check out https://github.com/janlelis/debugging
 
 *** Writing a program to generate the apis...
 
- Could I write some sort of program that could.. create these clients? 
+ Could I write some sort of program that could.. create these clients?
 
  #+begin_src lisp
    (namespace :QQQ :CLI
@@ -181,10 +205,10 @@ check out https://github.com/janlelis/debugging
 
 
    define_namespace(:QQQ) do
-     define_module(:CLI) do 
+     define_module(:CLI) do
        define_func(:echo, :argument_vector) do |messages|
          Generated::Formatters::ForHumans.format(messages)
-         Generated::Library::QQQ::publish 
+         Generated::Library::QQQ::publish
        end
      end
    end
@@ -197,7 +221,7 @@ check out https://github.com/janlelis/debugging
 Each module speaks in pub/sub. Thinking SYN/ACK style of testing.
 
 Each test case needs an environment to target
-Ideally can target a running system or spin one up 
+Ideally can target a running system or spin one up
 Shell-like access ability to create processes and control interaction...
 
 Each module MUST respond to a `SYN` command, sent over actual wire.
@@ -206,7 +230,7 @@ Each module MUST silently handle this, never display to the user.
 Each module MUST publish an ACK response message on system channel
 
 
-modules: 
+modules:
 - fileappender
 - ruby functions
 - ruby cli
@@ -215,6 +239,6 @@ modules:
 - web app
 *** Monitoring system
 
-Double ledger accounting? 
+Double ledger accounting?
 
 Each module must send events 1 by 1 but also send as a batch.

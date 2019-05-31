@@ -1,4 +1,5 @@
 require 'thor'
+require 'colorize'
 require 'qqq/file'
 
 module QQQ
@@ -8,7 +9,7 @@ module QQQ
     desc "tail", "Tails the qqq log"
     def tail
       QQQ.dev.subscribe do |event|
-        puts event.for_humans
+        event.for_humans
       end
     end
 

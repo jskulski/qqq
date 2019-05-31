@@ -1,26 +1,27 @@
+<% @root = File.join(Dir.pwd, '..') %> 
 name: qqq
-root: <%= Dir.pwd %>
+root: <%= @root %>
 
-# on_project_start: cd qqq-gem ; rake install
+on_project_start: cd qqq-gem ; rake install
 
 windows:
 
-  # Me at work, I just want to see the thing in one place.
-  - qqq_developer_user:
-      root: <%= "#{Dir.pwd}/qqq-gem" %>
-      layout: tiled
-      panes:
-        - bundle exec qqq mark 3
-        - bundle exec qqq tail
   - generated:
-      root: <%= "#{Dir.pwd}/qqq-generator" %>
+      root: <%= "#{@root}/qqq-generator" %>
       layout: tiled
       panes:
         - ruby gen.rb ruby
         - ruby gen.rb js
 
+  - qqq_developer_user:
+      root: <%= "#{@root}/qqq-gem" %>
+      layout: tiled
+      panes:
+        - bundle exec qqq mark 3
+        - bundle exec qqq tail
+
   - file_appender:
-      root: <%= "#{Dir.pwd}/qqq-gem" %>
+      root: <%= "#{@root}/qqq-gem" %>
       layout: tiled
       panes:
         - bundle exec qqq file-appender

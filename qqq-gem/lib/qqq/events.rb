@@ -22,8 +22,9 @@ module QQQ
       @message = message
     end
 
+    # TODO: extract to a formatter
     def for_humans
-      "[#{@uuid}] [#{@recorded_at}] #{@message}"
+      puts ["[#{@uuid}]".yellow, "[#{@recorded_at}]".green, "#{@message}".blue ].join(" ")
     end
 
     def as_json(options={})

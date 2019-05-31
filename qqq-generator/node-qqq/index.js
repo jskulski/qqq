@@ -8,26 +8,23 @@ console.log(cmd)
 console.log('ahsi');
 
 switch (cmd) { 
-case 'tail':
-function tail() { 
-  var redis = require("redis"),
+case 'mark':
+function mark() { 
+var redis = require("redis"),
     client = redis.createClient();
-console.log('hi');
 
-client.on("subscribe", function (channel, count) {
-    console.log("a nice channel", "I am sending my last message.");
-});
-
-client.on("message", function (channel, event) {
-  console.log(event)
-
-});
-
-client.subscribe("qqq::channel::event")
+    client.publish("qqq::channel::event",   JSON.stringify({
+  'uuid': '123',
+  'timestamp': 'now',
+  'message': "--MARK--"
+}
+)
+)
+client.quit();
 
 }
 
-  tail();
+  mark();
 break;
 
 }

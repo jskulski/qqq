@@ -1,7 +1,10 @@
+require 'uuidtools'
+
 def define_cli(&content)
   <<-EOF
   require 'thor'
   require 'redis'
+  require 'json'
 
   module QQQ
     class CLI < Thor
@@ -12,6 +15,7 @@ def define_cli(&content)
 end
 
 def define_command(command_name, &content)
+puts 'JSK'
   <<-EOF
 desc "tail", "hi"
 #{define_function(command_name) do
@@ -39,6 +43,31 @@ end
   EOF
 end
 
+def pubsub_publish(channel_name, event)
+<<-EOF
+redis = Redis.new
+redis.publish(#{channel_name}, #{event})
+EOF
+end
+
+def event_json(event)
+  # @requires = 'json'
+<<-EOF
+  #{event}.to_json
+EOF
+end
+
+
+def event_from_message(message)
+<<-EOF
+  {
+    uuid: UUIDTools::UUID.random_create().to_s.split('-').first,
+    recorded_at: Time.now,
+    message: "#{message}"
+  }
+EOF
+end
+
 def print_command(&block)
   <<-EOF
   puts event
@@ -56,5 +85,5 @@ def run(code)
 
   eval(code)
 
-  QQQ::CLI.start(['tail'])
+  QQQ::CLI.start(['mark'])
 end
