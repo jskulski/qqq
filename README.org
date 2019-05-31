@@ -1,5 +1,174 @@
 * QQQ
 
+** Mottos 
+
 - Elegant print debugging
 - Print debugging for professionals
 - Better than puts
+- Everyone does it
+- We don't rise to our expectations, we fall to our habits.
+- Print debugging is the pencil and paper. Limited but always useful.
+- Print smarter, debug harder
+- Print debugging is dumb but it doesn't have to be stupid
+
+** Vision
+
+Ubiquitious entry points in all my favorite languages and environments funneling rich data to a stream so easy and readable it's silly.
+
+** Posts
+
+*** QQQ #5 [2019-05-30 Thu]
+
+I took a couple hours and got a Generated libraries proof of concept working. I had a simple DSL in ruby 
+
+#+begin_src ruby
+  define_cli do
+    define_task :tail do
+      pubsub_subscribe :event_channel_name do |event|
+        system_print(event)
+      end
+    end 
+  end
+#+end_src
+
+and then implemented the methods for ruby and js. For example
+
+#+begin_src ruby
+  def define_cli(&block)
+  <<-EOF
+  require 'thor' # library for CLI
+
+  module QQQ
+    class CLI < Thor
+      #{block.call}
+    end
+  end
+
+  EOF
+  end
+#+end_src
+
+and similarly in javascript. 
+
+I was able to get these two generated and working. It wasn't that much of a pain to debug, and it will be easy to add new tasks and regenerate. I'm sure the devil is in those details. 
+
+Promising result with lots of tools available to help with this.
+ 
+*** QQQ #4 - Testing/monitoring [2019-05-30 Thu] 
+
+I'll need programmatic verification/testing method soon. But not immediately. The simplicity and flexibility of the dashboard is getting the job done. So I have the luxury to think about testing:
+
+Since each module is capable of publishing and subscribing to the same channel, we can send around invisible system commands through a live running system (or test environment).
+
+These packets could contain a 'test' like 'expect {source} to send {code} to {destination}'. An orchestrator could send this packet to {source}, firing the test, and {destination}, setting up the expectation. Upon successful completion {destination} can phone home to orchestrator. If no message received, {destination} alerts of failure.
+
+I think it's a nice mixture of monitoring and testing. I'm new to testing distributed systems, but this feels reasonable.
+
+But like I said, I'm not planning on doing that yet ;)  
+
+*** QQQ #3 
+
+ Testing has already become a pain. 
+
+ Having several components this early on means that there is no easy end to end test framework (that I know of.) Even just for sending a string in qqq, a full end to end test would need:
+
+ 1. `rake install` to install latest gem
+
+ 2. start front end build server
+
+ 3. spin up the `app` server
+
+ 4. spin up the local send to `app` server
+
+ 5. spin up a `qqq` tail 
+
+ 6. when everything is `up`, send a `qqq mark`
+
+ 7. /somehow verify it's gotten everywhere/ 
+
+
+ It's already so much and we're just sending a string from one place to another. 
+
+   
+ First, I tried some unit testing. This early in a project, it always feels heavy weight. The meat of the program is so small, you end up testing boundries or implementation. The tests feel unsatisfying and unnecessary, the time/effort spent could used better on other work.
+
+ Second, I tried a simple script to run shell commands to approximate the steps above. This worked okay, but littered open processes. A heavy handed `killall qqq` killed more than I wanted. The output was a mess as well.
+
+ However, it did get at a good idea: concentrate less on `testing` and more on `verification` or monitoring. Let's not take the human out just yet.
+
+ The focus this third time, hopefully the charm, is to build a dash board. To put into place a command that should always be there `up.sh` that spins up the entire system and gives a reasonable UX to poke at the thing. 
+
+ In this case, it's a shell command with up-arrow-history-access to a test command: `qqq mark`. Also on this screen is a couple panes containing: `qqq tail` and `qqq send` so you can see it tail to your devlog and send home to the server.
+
+ [ IMAGE HERE OF QQQ DASHBOARD ] 
+
+ On another window, you have 'homebase'. The web application to view and explore your messages. 
+
+ [ IMAGE HERE OF QQQ SERVER DASHBOARD ]
+
+ It's clunky, but the framework is there. I should be able to carve out and replace parts as needed. 
+
+*** QQQ #2
+
+ The first pass was to get a single string send from all conceivable
+ parts. I'm trying to focus on the simplest thing and do the entire vertical.
+
+ As a developer I'd like a handy function in any language/environment to enable _elegant_ print debugging in the same toolset. 
+
+ We'll start with ruby since that's top of mind, a good general purpose language, and can replace piecemeal if needed.
+
+ MVPwise with full verticality in mind, the approach will be to send a simple "string" as a message and get it showing in all wanted spots. From there I can expand that to serialized JSON/other structures.
+
+ - ruby qqq client (gem)
+ - `qqq` cli to tail worker (`qqq` command to tail messages)
+ - pub sub (redis)
+ - send home worker (messages home via https/websocket?)
+ - `qqq` app to accept https requests and write to indexed db
+ - some set of niceness/features for elegant debugging
+
+ The goal is "better than puts"
+
+*** QQQ #1 - Print Debugging For Professionals 
+
+Hello! I'm building a /thing/! These are my notes
+
+Print out the value of a variable is roughly the method I learned figure out /what the heck this thing is doing/ (smacks a 486 DX /turbo/). 
+
+Fifteen/20 years Print debugging is so useful, but it's such a pain. 
+
+#+begin_src ruby
+resp = some_func(user, article_id)
+
+puts "#{resp}" # where is it, wait is it null?
+puts "HI: #{resp}"  # is that output from this run or 
+puts "HI: #{Time.now} #{resp}"  # .. what is 9pm UTC in MST...
+puts "HI: #{resp}"  # what methods does resp have..
+debugger     # wait that's javascript, how do you start the debugger
+puts "HI2: #{resp.created_on}"  # how do i pretty print in ruby? 
+git commit -am "removing print debugging commands"
+#+end_src
+
+I'd like to help solve this.
+
+Of course, print debugging is not the best tool for understanding a system. It is may not even be advisable. REPLs, testing frameworks, debuggers all exist for good reason.  
+
+A sturdy debugger for your ecosystem is infinitely useful tool. It helps you explore the state of a program quickly and indepth. You usually can interact with a REPL/console to learn even more and experiment. 
+
+But all that usefulness has a weight. Debuggers can be heavy and slow to start; specific to tooling your team might not share; require switching modes, or take maintainence when that's the last thing you need. They are not usually available in production environments. 
+
+Masterful debuggers and toolsets out there, of course, but they are usually contained in an ecosystem or editor. The idea here is to build a tool decoupled from any specific ecosystem and manages to solve these issues:
+
+ - Where is _my_ statement in all this other output!?
+ - Moving environments? console.log;puts;prints;etc all the same stuff all over again
+ - Start a library for LanguageX 
+ - Which value is which? Did this loop and print more than once?
+ - When did I print that? from this run or last?
+ - Hitting enter to space out a new 'run'
+ - Cleaning up the print statements; accidentally committing them; etc
+ - Wanting to silence them
+ - Did my statement print? Was it null and a blank line? Am I just not seeing it?  
+ - Can't filter on it or collect this anywhere.
+ - Have to figure out where these logs are printing. what server am i on?
+
+ Let's just solve this once and for all.
+

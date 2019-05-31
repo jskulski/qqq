@@ -1,11 +1,24 @@
+* 2.0 - A Polished Thing
+
 "Do one thing well"
 
 Slim down all the extras. Focus on print debugging from anywhere in ruby.
 
+** 0.1.4 
+
+- [ ] Plumb qq for introspection in ruby 
+  - [ ] Print variable name
+  - [ ] Print function/line if possible
+  - [ ] Print time since last message
+
+[uuid] [timestamp]
+<message>
+
 ** 0.1.3
 
+- [X] Proof of concept generated CLI/gem/api
 - [X] file worker (append to /tmp/qqq)
-- [ ] system messaging for testing and debug
+- [X] create dashboard module
 
 ** 0.1.2
 
@@ -17,7 +30,9 @@ Slim down all the extras. Focus on print debugging from anywhere in ruby.
 ** 0.1.1 
 
 - [X] Hack around fakeredis to get redis connection, if enabled
-- [X] Remove messages in favor of richer Event structure 
+- [X] Remove messages in favor of richer Event structure
+- [X] increments if run multiple times..
+- [X] q, qq, qqq levels 
 
 * DONE 0.1.0 - A Thing
 
@@ -34,6 +49,7 @@ features
 dev
 - [X] Create rudimentary uh... dashboard/orchestration
 - [X] Create e2e.sh
+- [X] Remove payload/messages dichotomy
 
 * Roadmap 
 
@@ -43,14 +59,11 @@ dev
 - [ ] Supervisor around cli, etc. e.g. api send dies if server not up yet
 - [ ] Cut out redis for ruby pubsub? generate servers for every lang..? just make them..?  https://blog.appsignal.com/2018/08/28/push-and-pubsub-in-ruby.html
 - [ ] more tests? CI?
-- [ ] Remove payload/messages dichotomy
 
 ** user features
 - [ ] did not run (no wondering if line didn't run)... possible?
-- [ ] increments if run multiple times..
 - [ ] start / stop 'marks' 
 - [ ] some recent history (last 100?) when I start tailing
-- [ ] q, qq, qqq levels
 - [ ] plugin arch for worker 
 - [ ] updated development documentation 
 - [ ] api key to follow me around (~/.qqq.conf or whatever) 
@@ -62,8 +75,8 @@ dev
 - [ ] return the message so you can do `qqq somevalue == someother`
 
 - metadata
-    - [ ] reflection
-    - [ ] add classes, types
+  - [ ] reflection
+  - [ ] add classes, type, information
 
 QQQ.define do
     data = Data.find(some_id)
@@ -72,6 +85,7 @@ end
 
 
 ** dev
+- [ ] system messaging for testing and debug
 - [ ] a way to specifiy redis config
 - [ ] replace with own pubsub server...
 - [ ] how can i test this whole system
@@ -80,6 +94,9 @@ end
 - [ ] local gem dev - de-req rake install loop 
 - [ ] split out configuration (yaml?) for 'service' interaction
 - [ ] split the development panel / user panel
+
+universal transpiler...yum
+https://github.com/koczkatamas/onelang
 
 ** brewing ideas
 
@@ -172,3 +189,32 @@ check out https://github.com/janlelis/debugging
      end
    end
  #+end_src
+
+
+
+*** Testing system.
+
+Each module speaks in pub/sub. Thinking SYN/ACK style of testing.
+
+Each test case needs an environment to target
+Ideally can target a running system or spin one up 
+Shell-like access ability to create processes and control interaction...
+
+Each module MUST respond to a `SYN` command, sent over actual wire.
+Each SYN command will come with a unique key and destination
+Each module MUST silently handle this, never display to the user.
+Each module MUST publish an ACK response message on system channel
+
+
+modules: 
+- fileappender
+- ruby functions
+- ruby cli
+- node cli
+- node functions
+- web app
+*** Monitoring system
+
+Double ledger accounting? 
+
+Each module must send events 1 by 1 but also send as a batch.
