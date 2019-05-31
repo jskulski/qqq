@@ -3,14 +3,14 @@ module Gen
 
   def self.ruby
     puts "generating ruby"
-    require './gen-ruby'
+    require './gen/ruby'
     code = gen
     run(code)
   end
 
   def self.node
     puts "generating node"
-    require './gen-node'
+    require './gen/node'
     code = gen
     run(code)
   end
@@ -28,5 +28,9 @@ module Gen
   end
 end
 
-Gen.node
-# Gen.ruby
+if ARGV[0] == 'ruby'
+  Gen.ruby
+else
+  Gen.node
+end
+

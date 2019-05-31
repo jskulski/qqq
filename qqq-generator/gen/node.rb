@@ -75,5 +75,12 @@ def run(code)
   f.close
 
   puts "run..."
-  puts `node-qqq tail`
+
+  require 'open3'
+  command = "node-qqq/bin/node-qqq tail"
+  output = []
+  IO.popen(command).each do |line|
+    p line.chomp
+    output << line.chomp
+  end
 end
